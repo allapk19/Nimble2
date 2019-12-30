@@ -1,0 +1,30 @@
+<ion-header translucent="" class="header header-ios header-translucent header-translucent-ios hydrated">
+    <ion-toolbar class="hydrated">
+      <ion-buttons slot="start" class="sc-ion-buttons-ios-h sc-ion-buttons-ios-s hydrated">
+        <ion-button (click)="close()" class="button button-clear ion-activatable ion-focusable hydrated activated">Close</ion-button>
+      </ion-buttons>
+      <ion-title class="title-ios hydrated">Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header class="hydrated">
+      Preferences
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Include un-approved data</ion-label>
+      <ion-toggle [(ngModel)]="unapproved" slot="end" color="success"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header class="hydrated">
+      Enable/Disable Widgets
+    </ion-list-header>
+    <ion-item *ngFor="let section of salesSections">
+      <ion-label>{{ section.name }}</ion-label>
+      <ion-toggle slot="end" color="success" [(ngModel)]="section.value"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

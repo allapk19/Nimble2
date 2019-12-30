@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Choose: </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div scrollY="true" padding>
+  <ion-item button (click)="closePopover(all)" *ngIf="page == 'hotel-info'" detail>
+    <ion-label>All Hotels</ion-label>
+  </ion-item>
+
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>
+        Corporations
+      </ion-label>
+    </ion-item-divider>
+    <ion-item button *ngFor="let corp of corporations" (click)="closePopover(corp)" detail>
+      <ion-label>{{ corp.name }}</ion-label>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-item-group *ngIf="page == 'hotel-info'">
+    <ion-item-divider>
+      <ion-label>
+        Brands
+      </ion-label>
+    </ion-item-divider>
+    <ion-item button *ngFor="let brand of brands" (click)="closePopover(brand)" detail>
+      <ion-label>{{ brand.name }}</ion-label>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-item-group *ngIf="page == 'hotel-info'">
+    <ion-item-divider>
+      <ion-label>
+        Portfolios
+      </ion-label>
+    </ion-item-divider>
+    <ion-item button *ngFor="let port of portfolios" (click)="closePopover(port)" detail>
+      <ion-label>{{ port.name }}</ion-label>
+    </ion-item>
+  </ion-item-group>
+</div>
+
+<!--<ion-footer>
+  <ion-button (click)="closePopover()" expand="block">Close</ion-button>
+</ion-footer>-->

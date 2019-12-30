@@ -1,0 +1,73 @@
+ion-tab-bar {
+    height: 45px;
+}
+
+ion-tab-bar > ion-tab-button {
+    color: black;
+}
+
+.nameLabel {
+    font-size: 14px;
+}
+
+.active-tab {
+    background: #3880ff !important;
+    color: white !important;
+}
+
+#salesInfo {
+    margin: 60px 15px 15px 15px;
+    color: black;
+}
+
+#salesInfo > ion-card-content {
+    padding-top: 0 !important;
+}
+
+.salesHeader {
+    font-size: 12px;
+}
+
+ion-chip[color="primary"] {
+    font-size: 16px;
+}
+
+.compareVal {
+    margin: auto;
+}
+
+.compareVal > ion-chip {
+    margin-top: 25px;
+    font-size: 12px;
+    padding-left: 5px;
+}
+@media only screen and (min-width: 321px) {
+    ion-chip {
+        width: 100%;
+    }
+    ion-chip > ion-label {
+        margin: auto;
+    }
+}
+
+#otherInfo ion-col[size="8"] ion-label {
+    font-size: 14px;
+    margin-top: 10px;
+}
+#otherInfo {
+    margin-bottom: 50px;
+}
+
+#topDate {
+    height: 44px;
+    text-align: center;
+}
+#topTabs {
+    margin-top: 39px;
+}
+#datePicker {
+    background-color:  #f4f5f8;
+}
+.popover-content {
+    top: 5px !important;
+}

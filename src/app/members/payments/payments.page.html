@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="corpName == ''">Payment Approvals</ion-title>
+    <ion-title *ngIf="corpName != ''">{{ corpName }} Payments</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openSettings()">
+        <ion-icon slot="icon-only" name="settings"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+
+  <ion-card *ngIf="payments.length == 0 && corpName == ''">
+    <ion-card-content style="text-align: center">
+      Please choose a corporation to view bill information
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="payments.length == 0 && corpName != ''">
+    <ion-card-content style="text-align: center">
+      There are no pending bill approvals for this corporation
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-item-group *ngFor="let paymentGroup of payments">
+    <ion-item-divider>
+      <ion-label>
+        {{ paymentGroup[0].name }}
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item-sliding *ngFor="let payment of paymentGroup">
+      <ion-item-options side="start">
+        <ion-item-option color="danger" (click)='denyPayment(payment.paymentID)'>Deny</ion-item-option>
+      </ion-item-options>
+
+      <ion-item (click)="presentActionSheet(payment)">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7.5">
+              <ion-label color="danger">{{ payment.splits }}</ion-label>
+            </ion-col>
+            <ion-col size="1" style="text-align: center">
+              <ion-icon *ngIf="payment.downLoadPath1 != ''" name="attach" style="font-size: 18px"></ion-icon>
+            </ion-col>
+            <ion-col size="3.5" style="text-align: right">
+              <ion-label>{{ payment.entryDate }}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label>Bill Num. {{ payment.entryNumber }}</ion-label>
+            </ion-col>
+            <ion-col size="4" style="text-align: right">
+              <ion-label color="success">{{ payment.amount | currency }}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="success" (click)='approvePayment(payment.paymentID)'>Approve</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-item-group>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)='openPopover($event)'>
+      <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="!data">
+  <ion-item-sliding *ngFor="let payment of skeletonText">
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="7.5">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="1">
+          </ion-col>
+          <ion-col size="3.5" style="text-align: right">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="5">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="3" style="text-align: right">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-item-sliding>
+</ion-content>

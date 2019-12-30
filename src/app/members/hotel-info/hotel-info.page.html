@@ -1,0 +1,177 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedOption }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openSettings()">
+        <ion-icon slot="icon-only" name="settings"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-label id="topDate">
+    <ion-datetime displayFormat="MMM D, YYYY" id="datePicker" [(ngModel)]="myDate" (ngModelChange)="dateSelected($event)"></ion-datetime>
+  </ion-label>
+  <ion-tabs id="topTabs">
+    <ion-tab-bar slot="top">
+      <ion-tab-button *ngFor="let tab of tabs" (click)="tabClicked(tab)" [ngClass]="{'active-tab': tab.active}">
+        <ion-label>{{ tab.name }}</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <ion-card id="salesInfo" *ngIf="data">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-justify-content-end salesHeader">
+          <ion-col size="3.7" text-center>
+            Budget
+          </ion-col>
+          <ion-col size="3.7" text-center>
+            Last Year
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let section of salesSections">
+          <ion-col size="4.6">
+            <ion-label class="nameLabel">{{ section.name }}:</ion-label> <br>
+            <!--<ion-chip *ngIf="section.currency" color="primary">
+              <ion-label>${{ section.amount }}</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="!section.currency" color="primary">
+              <ion-label>{{ section.amount }}%</ion-label>
+            </ion-chip>-->
+            <ion-chip color="primary">
+              <ion-label *ngIf="section.amount >= 1000000 || section.amount <= -1000000">
+                {{ section.amount/1000000 | currency:  " " + section.currency }}M
+              </ion-label>
+              <ion-label *ngIf="(section.amount >= 1000 && section.amount < 1000000) || (section.amount <= -1000 && section.amount > -1000000)">
+                {{ section.amount/1000 | currency : " " + section.currency }}K
+              </ion-label>
+              <ion-label *ngIf="section.amount < 1000 && section.amount > -1000">
+                {{ (section.amount | currency : " " + section.currency) + section.percentage }}
+              </ion-label>
+            </ion-chip>
+          </ion-col>
+          <ion-col size="3.7" text-center class="compareVal">
+            <ion-chip *ngIf="section.budget >= 0" color="success">
+              <ion-label *ngIf="section.budget >= 1000000">{{ section.budget/1000000 | currency : "+" + section.currency }}M</ion-label>
+              <ion-label *ngIf="section.budget >= 1000 && section.budget < 1000000">{{ section.budget/1000 | currency : "+" + section.currency }}K</ion-label>
+              <ion-label *ngIf="section.budget < 1000">{{ (section.budget | currency : "+" + section.currency) + section.percentage }}</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="section.budget < 0" color="danger">
+              <ion-label *ngIf="section.budget <= -1000000">{{ section.budget/1000000*-1 | currency : "-" + section.currency }}M</ion-label>
+              <ion-label *ngIf="section.budget <= -1000 && section.budget > -1000000">{{ section.budget/1000*-1 | currency : "-" + section.currency }}K</ion-label>
+              <ion-label *ngIf="section.budget > -1000">{{ (section.budget*-1 | currency : "-" + section.currency) + section.percentage }}</ion-label>
+            </ion-chip>
+          </ion-col>
+          <ion-col size="3.7" text-center class="compareVal">
+            <ion-chip *ngIf="section.ly >= 0" color="success">
+              <ion-label *ngIf="section.ly >= 1000000">{{ section.ly/1000000 | currency : "+" + section.currency }}M</ion-label>
+              <ion-label *ngIf="section.ly >= 1000 && section.ly < 1000000">{{ section.ly/1000 | currency : "+" + section.currency }}K</ion-label>
+              <ion-label *ngIf="section.ly < 1000">{{ (section.ly | currency : "+" + section.currency) + section.percentage }}</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="section.ly < 0" color="danger">
+              <ion-label *ngIf="section.ly <= -1000000">{{ section.ly/1000000*-1 | currency : "-" + section.currency }}M</ion-label>
+              <ion-label *ngIf="section.ly <= -1000 && section.ly > -1000000">{{ section.ly/1000*-1 | currency : "-" + section.currency }}K</ion-label>
+              <ion-label *ngIf="section.ly > -1000">{{ (section.ly*-1 | currency : "-" + section.currency) + section.percentage }}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card id="otherInfo" *ngIf="otherData">
+    <div *ngFor="let section of otherSections">
+      <ion-item *ngIf="section.value != ''">
+        <ion-grid>
+          <ion-row *ngIf="section.value != ''">
+            <ion-col size="7">
+              <ion-label>{{ section.name }}: </ion-label>
+            </ion-col>
+            <ion-col size="5">
+              <ion-chip color="primary">
+                <ion-label *ngIf="section.value >= 1000000 || section.value <= -1000000">
+                  {{ section.value/1000000 | currency : section.currency}}M
+                </ion-label>
+                <ion-label *ngIf="(section.value >= 1000 && section.value < 1000000) || (section.value <= -1000 && section.value > -1000000)">
+                  {{ section.value/1000 | currency : section.currency}}K
+                </ion-label>
+                <ion-label *ngIf="section.value < 1000 && section.value > -1000">
+                  {{ section.value | currency : section.currency}}
+                </ion-label>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+  </ion-card>
+
+  <ion-card id="salesInfo" *ngIf="!data">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="ion-justify-content-end salesHeader">
+          <ion-col size="3.7" text-center>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+          <ion-col size="3.7" text-center>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <div *ngFor="let section of skeletonText">
+          <ion-row>
+            <ion-skeleton-text animated width="50%"></ion-skeleton-text>
+          </ion-row>
+          <ion-row>
+            <ion-col size="4.6">
+              <ion-chip color="primary">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-chip>
+            </ion-col>
+            <ion-col size="3.7" class="">
+              <ion-chip color="success">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-chip>
+            </ion-col>
+            <ion-col size="3.7" class="">
+              <ion-chip color="danger">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card id="otherInfo" *ngIf="!otherData">
+    <div *ngFor="let skel of skeleton">
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="7">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-col>
+            <ion-col size="5">
+              <ion-chip color="primary">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)='openPopover($event)'>
+      <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
